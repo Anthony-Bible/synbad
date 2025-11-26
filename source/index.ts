@@ -5,6 +5,7 @@ import path from "path";
 import OpenAI from "openai";
 
 const cli = new Command()
+.name("synbad")
 .description("A set of evals for LLM inference providers");
 
 cli.command("eval")

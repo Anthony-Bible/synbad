@@ -1,5 +1,19 @@
 import assert from "assert/strict";
 
+export function or(a: () => void, b: () => void) {
+  try {
+    a();
+  } catch(aErr) {
+    try {
+      b();
+    } catch(bErr) {
+      throw new assert.AssertionError({
+        message: `Tried multiple asserts, but they all failed.\n${aErr}\n\n${bErr}`,
+      });
+    }
+  }
+}
+
 export function isNullish(a: unknown): asserts a is null | undefined {
   if(a == null) return;
   throw new assert.AssertionError({

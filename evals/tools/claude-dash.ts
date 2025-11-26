@@ -8,7 +8,6 @@ export function test(response: OpenAI.ChatCompletion) {
 }
 
 export const json = {
-  "model": "hf:moonshotai/kimi-k2-thinking",
   "messages": [
     {
       "role": "system",
@@ -54,8 +53,6 @@ export const json = {
     }
   ],
   "max_tokens": 32000,
-  "stream": false,
-  "reasoning_effort": "high",
   "tools": [
     {
       "type": "function",

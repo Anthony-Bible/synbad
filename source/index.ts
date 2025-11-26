@@ -31,13 +31,13 @@ cli.command("eval")
   for await(const testFile of findTestFiles(path.join(import.meta.dirname, "../evals"))) {
     const test = await import(testFile);
     const json = test.json;
-    const response = await client.chat.completions.create({
-      model: modelName,
-      ...json,
-    });
     const basename = path.basename(testFile);
+    console.log(`Running ${basename}...`);
     try {
-      console.log(`Running ${basename}...`);
+      const response = await client.chat.completions.create({
+        model: modelName,
+        ...json,
+      });
       test.test(response);
       console.log(`✅ ${basename} passed`);
     } catch(e) {

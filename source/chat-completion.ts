@@ -1,4 +1,13 @@
 import { t } from "structural";
+import OpenAI from "openai";
+
+export type ChatResponse = OpenAI.ChatCompletion & {
+  choices: Array<{
+    message: {
+      reasoning_content?: string,
+    },
+  }>
+};
 
 const TextContentPart =  t.subtype({
   type: t.value("text"),

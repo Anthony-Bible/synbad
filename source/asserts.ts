@@ -68,3 +68,11 @@ export function isNotEmptyArray(a: any[]) {
     actual: a,
   });
 }
+
+export function startsWith(a: string, prefix: string) {
+  if(a.startsWith(prefix)) return true;
+  throw new assert.AssertionError({
+    message: "Expected to start with: " + prefix,
+    actual: a,
+  });
+}

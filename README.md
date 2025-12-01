@@ -65,7 +65,7 @@ synbad.sh --env-var SYNTHETIC_API_KEY \
 First, install it:
 
 ```bash
-npm install @syntheticlab/synbad
+npm install -g @syntheticlab/synbad
 ```
 
 Then run:

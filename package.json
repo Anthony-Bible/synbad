@@ -2,10 +2,16 @@
   "name": "synbad",
   "version": "0.0.1",
   "description": "LLM inference provider evals",
-  "main": "dist/index.js",
+  "main": "dist/source/index.js",
+  "bin": {
+		"synbad": "dist/source/index.js"
+  },
+	"preferGlobal": true,
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+		"build": "tsc",
+		"prepublishOnly": "tsc"
   },
   "author": "@reissbaker",
   "license": "MIT",

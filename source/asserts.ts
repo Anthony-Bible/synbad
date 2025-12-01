@@ -19,12 +19,13 @@ export {
   throws,
 } from "assert";
 
-export function or(a: () => void, b: () => void) {
+export function or(a: () => void, ...rest: Array<() => void>) {
   try {
     a();
   } catch(aErr) {
+    if(rest.length === 0) throw aErr;
     try {
-      b();
+      or(rest[0], ...rest.slice(1));
     } catch(bErr) {
       throw new assert.AssertionError({
         message: `Tried multiple asserts, but they all failed.\n${aErr}\n\n${bErr}`,

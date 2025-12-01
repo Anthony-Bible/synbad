@@ -8,6 +8,23 @@ inference quality as high as possible.
 If you find bugs in Synthetic's model hosting, please contribute the bugs here!
 We will fix them.
 
+## Results
+
+We keep a running tally of provider+model results:
+
+|Provider |Model           |Success Rate|
+|---------|----------------|------------|
+|Synthetic|GLM-4.6         |:white_check_mark: 100%|
+|Fireworks|GLM-4.6         |:white_check_mark: 100%|
+|Parasail |GLM-4.6         |:x: 71%|
+|Together |GLM-4.6         |:white_check_mark: 100%|
+|Synthetic|MiniMax M2      |:white_check_mark: 100%|
+|Fireworks|MiniMax M2      |:x: 29%|
+|Synthetic|Kimi K2 Thinking|:white_check_mark: 100%|
+|Fireworks|Kimi K2 Thinking|:x: 86%|
+|Parasail |Kimi K2 Thinking|:x: 57%|
+|Together |Kimi K2 Thinking|:x: 71%|
+
 ## Contributing
 
 First, clone this repo from Github. Then `cd` into it and run:

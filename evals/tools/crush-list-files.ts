@@ -8,11 +8,20 @@ export function test(response: OpenAI.ChatCompletion) {
   assert.strictEqual(tool_calls.length, 1);
   assert.strictEqual(tool_calls[0].type, "function");
   const fn = tool_calls[0].function;
-  assert.strictEqual(fn.name, "ls");
-  const args = JSON.parse(fn.arguments);
   assert.or(
-    () => assert.deepStrictEqual(args, {}),
-    () => assert.deepStrictEqual(args.path, "/home/reissbaker/Hack/scratch-scripts")
+    () => {
+      assert.strictEqual(fn.name, "ls");
+      const args = JSON.parse(fn.arguments);
+      assert.or(
+        () => assert.deepStrictEqual(args, {}),
+        () => assert.deepStrictEqual(args.path, "/home/reissbaker/Hack/scratch-scripts")
+      );
+    },
+    () => {
+      assert.strictEqual(fn.name, "bash");
+      const args = JSON.parse(fn.arguments);
+      assert.ok(args.command.startsWith("ls"));
+    },
   );
 }
 

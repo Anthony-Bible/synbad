@@ -1,5 +1,5 @@
 {
-  "name": "synbad",
+  "name": "@syntheticlab/synbad",
   "version": "0.0.1",
   "description": "LLM inference provider evals",
   "main": "dist/source/index.js",

@@ -1,4 +1,4 @@
-![Synbad the legendary sailor](./synbad.png)
+![Synbad the legendary sailor](https://raw.githubusercontent.com/synthetic-lab/synbad/main/synbad.png)
 
 Synbad is a tool for detecting bugs in LLM inference providers, especially
 open-source ones. Synbad is maintained by

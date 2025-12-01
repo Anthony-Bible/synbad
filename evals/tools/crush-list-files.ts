@@ -1,17 +1,16 @@
 import OpenAI from "openai";
-import { isNotNullish, isNotEmptyArray, or } from "../../source/asserts.ts";
-import assert from "assert";
+import * as assert from "../../source/asserts.ts";
 
 export function test(response: OpenAI.ChatCompletion) {
   const { tool_calls } = response.choices[0].message;
-  isNotNullish(tool_calls);
-  isNotEmptyArray(tool_calls);
+  assert.isNotNullish(tool_calls);
+  assert.isNotEmptyArray(tool_calls);
   assert.strictEqual(tool_calls.length, 1);
   assert.strictEqual(tool_calls[0].type, "function");
   const fn = tool_calls[0].function;
   assert.strictEqual(fn.name, "ls");
   const args = JSON.parse(fn.arguments);
-  or(
+  assert.or(
     () => assert.deepStrictEqual(args, {}),
     () => assert.deepStrictEqual(args.path, "/home/reissbaker/Hack/scratch-scripts")
   );

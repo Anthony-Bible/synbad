@@ -1,9 +1,9 @@
-import { isNotNullish } from "../../source/asserts.ts";
+import * as assert from "../../source/asserts.ts";
 import { ChatResponse } from "../../source/chat-completion.ts";
 
 export function test(response: ChatResponse) {
   const reasoning = response.choices[0].message.reasoning_content;
-  isNotNullish(reasoning);
+  assert.isNotNullish(reasoning);
 }
 
 export const json = {

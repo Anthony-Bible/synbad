@@ -1,10 +1,10 @@
 import OpenAI from "openai";
-import { isNotNullish, isNotEmptyArray } from "../../source/asserts.ts";
+import * as assert from "../../source/asserts.ts";
 
 export function test(response: OpenAI.ChatCompletion) {
   const { tool_calls } = response.choices[0].message;
-  isNotNullish(tool_calls);
-  isNotEmptyArray(tool_calls);
+  assert.isNotNullish(tool_calls);
+  assert.isNotEmptyArray(tool_calls);
 }
 
 export const json = {

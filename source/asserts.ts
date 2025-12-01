@@ -1,4 +1,23 @@
-import assert from "assert/strict";
+import assert from "assert";
+export {
+  deepEqual,
+  deepStrictEqual,
+  doesNotMatch,
+  doesNotReject,
+  doesNotThrow,
+  equal,
+  fail,
+  ifError,
+  match,
+  notDeepEqual,
+  notDeepStrictEqual,
+  notEqual,
+  notStrictEqual,
+  ok,
+  rejects,
+  strictEqual,
+  throws,
+} from "assert";
 
 export function or(a: () => void, b: () => void) {
   try {

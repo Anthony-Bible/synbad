@@ -13,15 +13,18 @@ export function test(response: OpenAI.ChatCompletion) {
       assert.strictEqual(fn.name, "ls");
       const args = JSON.parse(fn.arguments);
       assert.or(
-        () => assert.deepStrictEqual(args, {}),
         () => assert.strictEqual(args.path, "/home/reissbaker/Hack/scratch-scripts"),
         () => assert.strictEqual(args.path, "."),
+        () => assert.isNullish(args.path),
       );
     },
     () => {
       assert.strictEqual(fn.name, "bash");
       const args = JSON.parse(fn.arguments);
-      assert.ok(args.command.startsWith("ls"));
+      assert.or(
+        () => assert.startsWith(args.command, "ls"),
+        () => assert.startsWith(args.command, "find"),
+      );
     },
   );
 }

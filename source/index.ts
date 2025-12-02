@@ -41,7 +41,7 @@ cli.command("eval")
   const failures = new Set<string>();
   const evalPath = only ? path.join(
     import.meta.dirname, "..", only
-  ) : path.join(import.meta.dirname, "../evals");
+  ) : path.join(import.meta.dirname, "..", "evals");
   const maxRuns = count == null ? 1 : parseInt(count, 10);
   for await(const testFile of findTestFiles(evalPath)) {
     found++;

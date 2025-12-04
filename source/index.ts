@@ -28,7 +28,7 @@ cli.command("eval")
   "--count <num times>", "Number of times to run the eval. Any failures count as an overall failure",
 )
 .requiredOption("--model <model name>", "The model name to test")
-.action(async ({ model, envVar, baseUrl, only, count }) => {
+.action(async ({ model, envVar, baseUrl, only, count, skipReasoning }) => {
   if(!process.env[envVar]) {
     console.error(`No env var named ${envVar} exists for the current process`);
     process.exit(1);
@@ -43,7 +43,7 @@ cli.command("eval")
     import.meta.dirname, "..", only
   ) : path.join(import.meta.dirname, "..", "evals");
   const maxRuns = count == null ? 1 : parseInt(count, 10);
-  for await(const testFile of findTestFiles(evalPath)) {
+  for await(const testFile of findTestFiles(evalPath, !!skipReasoning)) {
     found++;
     const test = await import(testFile);
     const json = test.json;
@@ -212,7 +212,7 @@ function evalName(file: string) {
   return `${path.basename(path.dirname(file))}/${path.basename(file).replace(/.js$/, "")}`
 }
 
-async function* findTestFiles(dir: string): AsyncGenerator<string> {
+async function* findTestFiles(dir: string, skipReasoning: boolean): AsyncGenerator<string> {
   try {
     await fs.stat(dir);
   } catch(e) {
@@ -236,7 +236,8 @@ async function* findTestFiles(dir: string): AsyncGenerator<string> {
       yield entry.path;
     }
     if(entry.stat.isDirectory()) {
-      yield* findTestFiles(entry.path);
+      if(skipReasoning && path.basename(entry.path) === "reasoning") continue;
+      yield* findTestFiles(entry.path, skipReasoning);
     }
   }
 }

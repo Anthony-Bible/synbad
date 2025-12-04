@@ -448,7 +448,4 @@ export const json = {
   ],
   "tool_choice": "auto",
   "max_tokens": 60000,
-  "stream_options": {
-    "include_usage": true
-  }
 }

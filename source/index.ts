@@ -22,13 +22,16 @@ cli.command("eval")
   "--skip-reasoning", "Skip reasoning evals (set this for non-reasoning models)"
 )
 .option(
+  "--reasoning-effort <level>", "Set the reasoning effort to high, medium, or low"
+)
+.option(
   "--only <eval path within synbad>", "Specific evals you want to run, e.g. evals/reasoning or evals/tools/claude-dash"
 )
 .option(
   "--count <num times>", "Number of times to run the eval. Any failures count as an overall failure",
 )
 .requiredOption("--model <model name>", "The model name to test")
-.action(async ({ model, envVar, baseUrl, only, count, skipReasoning }) => {
+.action(async ({ model, envVar, baseUrl, only, count, skipReasoning, reasoningEffort }) => {
   if(!process.env[envVar]) {
     console.error(`No env var named ${envVar} exists for the current process`);
     process.exit(1);
@@ -54,9 +57,13 @@ cli.command("eval")
         if(maxRuns > 1) {
           process.stdout.write(` ${i + 1}/${maxRuns}`);
         }
+        const reasoning = reasoningEffort == null ? {} : {
+          reasoning_effort: reasoningEffort,
+        };
         const response = await client.chat.completions.create({
           model,
           ...json,
+          ...reasoning,
         });
         try {
           test.test(response);

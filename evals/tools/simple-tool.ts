@@ -1,8 +1,7 @@
-import { ChatResponse } from "../../source/chat-completion.ts";
+import { ChatMessage } from "../../source/chat-completion.ts";
 import * as assert from "../../source/asserts.ts";
 
-export function test(response: ChatResponse) {
-  const { tool_calls } = response.choices[0].message;
+export function test({ tool_calls }: ChatMessage) {
   assert.isNotNullish(tool_calls);
   assert.isNotEmptyArray(tool_calls);
   assert.strictEqual(tool_calls.length, 1);

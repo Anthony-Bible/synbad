@@ -1,8 +1,7 @@
-import OpenAI from "openai";
 import * as assert from "../../source/asserts.ts";
+import { ChatMessage } from "../../source/chat-completion.ts";
 
-export function test(response: OpenAI.ChatCompletion) {
-  const { tool_calls } = response.choices[0].message;
+export function test({ tool_calls }: ChatMessage) {
   assert.isNotNullish(tool_calls);
   assert.isNotEmptyArray(tool_calls);
 }

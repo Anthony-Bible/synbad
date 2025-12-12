@@ -5,6 +5,7 @@ import fs from "fs/promises";
 import path from "path";
 import { Command } from "@commander-js/extra-typings";
 import OpenAI from "openai";
+import { ChatMessage, getReasoning } from "./chat-completion.ts";
 
 const cli = new Command()
 .name("synbad")
@@ -30,8 +31,11 @@ cli.command("eval")
 .option(
   "--count <num times>", "Number of times to run the eval. Any failures count as an overall failure",
 )
+.option(
+  "--stream", "Test streaming API calls",
+)
 .requiredOption("--model <model name>", "The model name to test")
-.action(async ({ model, envVar, baseUrl, only, count, skipReasoning, reasoningEffort }) => {
+.action(async ({ model, envVar, baseUrl, only, count, skipReasoning, reasoningEffort, stream }) => {
   if(!process.env[envVar]) {
     console.error(`No env var named ${envVar} exists for the current process`);
     process.exit(1);
@@ -52,24 +56,111 @@ cli.command("eval")
     const json = test.json;
     const name = evalName(testFile);
     process.stdout.write(`Running ${name}...`);
-    try {
-      for(let i = 0; i < maxRuns; i++) {
-        if(maxRuns > 1) {
-          process.stdout.write(` ${i + 1}/${maxRuns}`);
-        }
-        const reasoning = reasoningEffort == null ? {} : {
-          reasoning_effort: reasoningEffort,
-        };
+
+    async function respond(): Promise<ChatMessage> {
+      const reasoning = reasoningEffort == null ? {} : {
+        reasoning_effort: reasoningEffort,
+      };
+      if(!stream) {
         const response = await client.chat.completions.create({
           model,
           ...json,
           ...reasoning,
         });
+        return response.choices[0].message;
+      }
+
+      const msg: Partial<ChatMessage> = {};
+
+      const chunkStream = await (client.chat.completions.create({
+        model,
+        ...json,
+        ...reasoning,
+        stream: true,
+      }) as unknown as Promise<AsyncIterable<OpenAI.ChatCompletionChunk & {
+        choices: Array<{
+          delta: {
+            reasoning?: string,
+            reasoning_content?: string,
+          },
+        }>
+      }>>);
+
+      let lastIndex: number | null = null;
+      let toolBuffer: {
+        id?: string,
+        type: "function",
+        index: number,
+        function: {
+          name?: string,
+          arguments?: string,
+        },
+      } | null = null;
+      for await(const chunk of chunkStream) {
+        if(!chunk.choices) continue;
+        const choice = chunk.choices[0];
+        if(!choice) continue;
+        const content = choice.delta.content;
+        const tools = choice.delta.tool_calls;
+        const reasoning = getReasoning(choice.delta);
+        if(content) {
+          if(!msg.content) msg.content = "";
+          msg.content += content;
+        }
+        if(tools) {
+          for(const toolDelta of tools) {
+            if(lastIndex == null) lastIndex = toolDelta.index;
+            if(lastIndex !== toolDelta.index && toolBuffer != null) {
+              msg.tool_calls ||= [];
+              // @ts-ignore
+              msg.tool_calls.push(toolBuffer);
+              toolBuffer = {
+                index: toolDelta.index,
+                type: "function",
+                function: {},
+              };
+            }
+            if(!toolBuffer) {
+              toolBuffer = {
+                index: toolDelta.index,
+                type: "function",
+                function: {}
+              };
+            }
+            if(toolDelta.id) toolBuffer.id = toolDelta.id;
+            if(toolDelta.function) {
+              if(toolDelta.function.name) toolBuffer.function.name = toolDelta.function.name;
+              if(toolDelta.function.arguments) {
+                toolBuffer.function.arguments = toolDelta.function.arguments;
+              }
+            }
+          }
+        }
+        if(reasoning) {
+          if(!msg.reasoning_content) msg.reasoning_content = "";
+          msg.reasoning_content += reasoning;
+        }
+      }
+
+      if(toolBuffer) {
+        // @ts-ignore
+        msg.tool_calls.push(toolBuffer);
+      }
+
+      return msg as ChatMessage;
+    }
+
+    try {
+      for(let i = 0; i < maxRuns; i++) {
+        if(maxRuns > 1) {
+          process.stdout.write(` ${i + 1}/${maxRuns}`);
+        }
+        const response = await respond();
         try {
           test.test(response);
         } catch(e) {
           console.error("Response:");
-          console.error(JSON.stringify(response.choices[0], null, 2));
+          console.error(JSON.stringify(response, null, 2));
           throw e;
         }
       }

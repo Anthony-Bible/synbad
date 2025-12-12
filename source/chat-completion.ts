@@ -14,6 +14,8 @@ export type ChatResponse = OpenAI.ChatCompletion & {
   }>
 };
 
+export type ChatMessage = ChatResponse["choices"][number]["message"];
+
 const TextContentPart =  t.subtype({
   type: t.value("text"),
   text: t.str,

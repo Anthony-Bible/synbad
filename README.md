@@ -8,6 +8,14 @@ inference quality as high as possible.
 If you find bugs in Synthetic's model hosting, please contribute the bugs here!
 We will fix them.
 
+## Install
+
+Synbad is distributed through npm. Install it with:
+
+```bash
+npm install -g @syntheticlab/synbad
+```
+
 ## Results
 
 We keep a running tally of provider+model results for GLM-4.6, Kimi K2
@@ -71,26 +79,47 @@ TypeScript. You need to export two things from an eval:
 1. The JSON that reproduces the problem, as the const `json`. It doesn't have to
    reproduce it 100% of the time; if the bug appears even 5% of the time,
    that's fine.
-2. A `test` function that runs some asserts on the output of the response,
+2. A `test` function that runs some asserts on the returned assistant message,
    which detect the error.
 
-For example, we can test reasoning parsing very simply (as we do in the
-`evals/reasoning/reasoning-parsing.ts` file):
+For example, we can test parallel tool call support very simply (as we do in the
+`evals/tools/parallel-tool.ts` file):
 
 ```typescript
 import * as assert from "../../source/asserts.ts";
-import { ChatResponse, getReasoning } from "../../source/chat-completion.ts";
+import { ChatMessage } from "../../source/chat-completion.ts";
 
-export function test(response: ChatResponse) {
-  const reasoning = getReasoning(response.choices[0].message);
-  assert.isNotNullish(reasoning);
+export function test({ tool_calls }: ChatMessage) {
+  assert.isNotNullish(tool_calls);
+  assert.isNotEmptyArray(tool_calls);
+  assert.strictEqual(tool_calls.length, 2);
 }
 
-// Insert your JSON. You can paste your results from the Synbad proxy here.
 export const json = {
-  messages: [
-    { role: "user", content: "Why does 1+1=2?" }
+  "messages": [
+    {"role": "user", "content": "What's the weather in Paris and London?"}
   ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Get current weather for a location",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "string",
+              "description": "City name"
+            }
+          },
+          "required": ["location"]
+        }
+      }
+    }
+  ],
+  "parallel_tool_calls": true,
+  "tool_choice": "auto",
 }
 ```
 
@@ -129,7 +158,7 @@ import { getReasoning } from "../../source/chat-completion.ts";
 
 // In your test:
 
-const reasoning = getReasoning(response.choices[0].message);
+const reasoning = getReasoning(message);
 ```
 
 This ensures your test will use the correct reasoning content data regardless

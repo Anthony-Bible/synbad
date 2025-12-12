@@ -1,13 +1,13 @@
 import * as assert from "../../source/asserts.ts";
-import { ChatResponse, getReasoning } from "../../source/chat-completion.ts";
+import { ChatMessage, getReasoning } from "../../source/chat-completion.ts";
 
-export function test(response: ChatResponse) {
-  const reasoning = getReasoning(response.choices[0].message);
+export function test(message: ChatMessage) {
+  const reasoning = getReasoning(message);
   assert.isNotNullish(reasoning);
-  const content = response.choices[0].message.content;
+  const content = message.content;
   assert.or(
     () => assert.isNotNullish(content),
-    () => assert.isNotEmptyArray(response.choices[0].message.tool_calls),
+    () => assert.isNotEmptyArray(message.tool_calls),
   );
 }
 

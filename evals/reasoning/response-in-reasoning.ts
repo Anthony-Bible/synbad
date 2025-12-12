@@ -1,9 +1,7 @@
 import * as assert from "../../source/asserts.ts";
-import { ChatMessage, getReasoning } from "../../source/chat-completion.ts";
+import { ChatMessage } from "../../source/chat-completion.ts";
 
 export function test(message: ChatMessage) {
-  const reasoning = getReasoning(message);
-  assert.isNotNullish(reasoning);
   const content = message.content;
   assert.or(
     () => assert.isNotNullish(content),

@@ -61,7 +61,13 @@ export function isEmptyArray(a: any[]) {
   });
 }
 
-export function isNotEmptyArray(a: any[]) {
+export function isNotEmptyArray(a: any[] | undefined) {
+  if(a == null) {
+    throw new assert.AssertionError({
+      message: "Expected a non-empty array",
+      actual: a,
+    });
+  }
   if(a.length !== 0) return true;
   throw new assert.AssertionError({
     message: "Expected a non-empty array",

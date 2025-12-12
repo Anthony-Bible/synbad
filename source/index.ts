@@ -143,6 +143,7 @@ cli.command("eval")
       }
 
       if(toolBuffer) {
+        msg.tool_calls ||= [];
         // @ts-ignore
         msg.tool_calls.push(toolBuffer);
       }

@@ -40,7 +40,7 @@ Thinking, and MiniMax M2. Feel free to add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
-|Parasail |GLM-4.6         |:x: 75%|
+|Parasail |GLM-4.6         |:x: 78%|
 |Parasail |Kimi K2 Thinking|:x: 44%|
 
 Note for attempting reproductions: generally all tests are reproducible with

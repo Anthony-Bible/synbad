@@ -18,17 +18,19 @@ npm install -g @syntheticlab/synbad
 
 ## Results
 
-We keep a running tally of provider+model results for GLM-4.6, Kimi K2
+We keep a running tally of provider+model results for GLM-4.7, GLM-4.6, Kimi K2
 Thinking, and MiniMax M2. Feel free to add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
+|Synthetic|GLM-4.7         |:white_check_mark: 100%|
 |Synthetic|GLM-4.6         |:white_check_mark: 100%|
 |Synthetic|Kimi K2 Thinking|:white_check_mark: 100%|
 |Synthetic|MiniMax M2      |:white_check_mark: 100%|
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
+|Fireworks|GLM-4.7         |:white_check_mark: 100%|
 |Fireworks|GLM-4.6         |:white_check_mark: 100%|
 |Fireworks|Kimi K2 Thinking|:x: 56%|
 |Fireworks|MiniMax M2      |:white_check_mark: 100%|
@@ -40,6 +42,7 @@ Thinking, and MiniMax M2. Feel free to add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
+|Parasail |GLM-4.7         |:white_check_mark: 100%|
 |Parasail |GLM-4.6         |:x: 78%|
 |Parasail |Kimi K2 Thinking|:x: 44%|
 

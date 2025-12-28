@@ -63,9 +63,10 @@ cli.command("eval")
       };
       if(!stream) {
         const response = await client.chat.completions.create({
-          model,
           ...json,
           ...reasoning,
+          stream: false,
+          model,
         });
         return response.choices[0].message;
       }
@@ -73,9 +74,9 @@ cli.command("eval")
       const msg: Partial<ChatMessage> = {};
 
       const chunkStream = await (client.chat.completions.create({
-        model,
         ...json,
         ...reasoning,
+        model,
         stream: true,
       }) as unknown as Promise<AsyncIterable<OpenAI.ChatCompletionChunk & {
         choices: Array<{

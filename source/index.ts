@@ -195,6 +195,7 @@ ${passed}/${found} evals passed. Failures:
 cli.command("proxy")
 .requiredOption("-p, --port <number>", "Port to listen on")
 .requiredOption("-t, --target <url>", "Target URL to proxy to")
+.option("--pretty", "Pretty-print the JSON")
 .action(async (options) => {
   const port = parseInt(options.port, 10);
   const targetUrl = new URL(options.target);
@@ -226,6 +227,8 @@ cli.command("proxy")
 
       // Choose the right module based on target protocol
       const httpModule = targetUrl.protocol === "https:" ? https : http;
+
+      const buffer: string[] = [];
 
       // Create proxy request
       const proxyReq = httpModule.request(
@@ -282,12 +285,14 @@ cli.command("proxy")
       });
 
       req.on("data", (chunk) => {
-        process.stdout.write(chunk);
+        buffer.push(chunk);
+        if(!options.pretty) process.stdout.write(chunk);
         proxyReq.write(chunk);
       });
 
       req.on("end", () => {
-        process.stdout.write("\n");
+        if(options.pretty) console.log(JSON.stringify(JSON.parse(buffer.join()), null, 2));
+        else process.stdout.write("\n");
         console.log(`[${timestamp}] ✅ Request complete`);
         proxyReq.end();
       });

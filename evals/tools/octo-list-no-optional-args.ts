@@ -10,11 +10,12 @@ export function test({ tool_calls }: ChatMessage) {
   assert.or(
     () => assert.isNullish(parsed),
     () => assert.deepEqual(parsed, {}),
+    () => assert.isNullish(parsed.dirPath),
+    () => assert.strictEqual(parsed.dirPath, ""),
   );
 }
 
 export const json = {
-  "model":"hf:zai-org/GLM-4.7",
   "messages":[
     {
       "role":"system",

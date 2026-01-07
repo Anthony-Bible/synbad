@@ -35,7 +35,7 @@ Thinking, and MiniMax M2. Feel free to add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
-|Together |Kimi K2 Thinking|:x: 44%|
+|Together |Kimi K2 Thinking|:x: 66%|
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|

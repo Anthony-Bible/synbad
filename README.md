@@ -30,7 +30,7 @@ Thinking, and MiniMax M2. Feel free to add more provider results!
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
 |Fireworks|GLM-4.7         |:x: 83%|
-|Fireworks|Kimi K2 Thinking|:x: 91%|
+|Fireworks|Kimi K2 Thinking|:x: 92%|
 |Fireworks|MiniMax M2      |:white_check_mark: 100%|
 
 |Provider |Model           |Success Rate|

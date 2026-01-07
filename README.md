@@ -18,8 +18,9 @@ npm install -g @syntheticlab/synbad
 
 ## Results
 
-We keep a running tally of provider+model results for GLM-4.7, Kimi K2
-Thinking, and MiniMax M2. Feel free to add more provider results!
+We keep a running tally of provider+model results for tool calling and
+reasoning parsing for GLM-4.7, Kimi K2 Thinking, and MiniMax M2. Feel free to
+add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|

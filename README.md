@@ -18,33 +18,29 @@ npm install -g @syntheticlab/synbad
 
 ## Results
 
-We keep a running tally of provider+model results for GLM-4.7, GLM-4.6, Kimi K2
+We keep a running tally of provider+model results for GLM-4.7, Kimi K2
 Thinking, and MiniMax M2. Feel free to add more provider results!
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
 |Synthetic|GLM-4.7         |:white_check_mark: 100%|
-|Synthetic|GLM-4.6         |:white_check_mark: 100%|
 |Synthetic|Kimi K2 Thinking|:white_check_mark: 100%|
 |Synthetic|MiniMax M2      |:white_check_mark: 100%|
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
-|Fireworks|GLM-4.7         |:white_check_mark: 100%|
-|Fireworks|GLM-4.6         |:white_check_mark: 100%|
-|Fireworks|Kimi K2 Thinking|:x: 56%|
+|Fireworks|GLM-4.7         |:x: 83%|
+|Fireworks|Kimi K2 Thinking|:x: 91%|
 |Fireworks|MiniMax M2      |:white_check_mark: 100%|
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
-|Together |GLM-4.6         |:white_check_mark: 100%|
 |Together |Kimi K2 Thinking|:x: 44%|
 
 |Provider |Model           |Success Rate|
 |---------|----------------|------------|
-|Parasail |GLM-4.7         |:white_check_mark: 100%|
-|Parasail |GLM-4.6         |:x: 78%|
-|Parasail |Kimi K2 Thinking|:x: 44%|
+|Parasail |GLM-4.7         |:x: 83%|
+|Parasail |Kimi K2 Thinking|:x: 75%|
 
 Note for attempting reproductions: generally all tests are reproducible with
 `--count 1` and `--count 1 --stream`, but for evaluating the

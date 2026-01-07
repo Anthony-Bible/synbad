@@ -10,6 +10,9 @@ export type ChatResponse = OpenAI.ChatCompletion & {
     message: {
       reasoning_content?: string,
       reasoning?: string,
+      tool_calls?: Array<{
+        index: number,
+      }>
     },
   }>
 };
@@ -58,6 +61,7 @@ const AssistantMessageSchema = t.subtype({
     name: t.str,
   })),
   reasoning_content: t.optional(t.str.or(t.nil)),
+  reasoning: t.optional(t.str.or(t.nil)),
 });
 
 const UserMessageSchema = t.subtype({

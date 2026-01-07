@@ -68,7 +68,7 @@ cli.command("eval")
           stream: false,
           model,
         });
-        return response.choices[0].message;
+        return response.choices[0].message as ChatMessage;
       }
 
       const msg: Partial<ChatMessage> = {};
